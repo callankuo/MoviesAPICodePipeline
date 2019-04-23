@@ -1,8 +1,8 @@
 version: 0.2
 env:
   variables:
-    S3_BUCKET: "movies-api-deployment-packages"
-    PACKAGE: "github.com/mlabouardy/lambda-codepipeline"
+    S3_BUCKET: "callankuo-moviesapi-deployment-packages"
+    PACKAGE: "github.com/callankuo/MoviesAPICodePipeline"
 
 phases:
   install:
