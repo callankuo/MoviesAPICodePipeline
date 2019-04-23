@@ -1,7 +1,7 @@
 version: 0.2
 env:
   variables:
-    S3_BUCKET: "callankuo-moviesapi-deployment-packages"
+    S3_BUCKET: "codepipeline-us-east-2-991978533736"
     PACKAGE: "github.com/callankuo/MoviesAPICodePipeline"
 
 phases:
