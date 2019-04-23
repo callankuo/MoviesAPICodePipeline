@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
+// Movie entity mapping to Movies table in DB
 type Movie struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
