@@ -30,10 +30,11 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	}
 	size, err := strconv.Atoi(request.Headers["Count"])
 	if err != nil {
-		return events.APIGatewayProxyResponse{
-			StatusCode: http.StatusBadRequest,
-			Body:       "Count Header should be a number",
-		}, nil
+		//return events.APIGatewayProxyResponse{
+		//	StatusCode: http.StatusBadRequest,
+		//	Body:       "Count Header should be a number",
+		size = 4
+		//}, nil
 	}
 
 	svc := dynamodb.New(cfg)
