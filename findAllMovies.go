@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -29,19 +30,19 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			Body:       "Error while retrieving AWS credentials",
 		}, nil
 	}
-	//size, err := strconv.Atoi(request.Headers["Count"])
-	//if err != nil {
-	//return events.APIGatewayProxyResponse{
-	//	StatusCode: http.StatusBadRequest,
-	//	Body:       "Count Header should be a number",
-	//size = 4
-	//}, nil
-	//}
+	size, err := strconv.Atoi(request.Headers["Count"])
+	if err != nil {
+		size = 8
+		//return events.APIGatewayProxyResponse{
+		//	StatusCode: http.StatusBadRequest,
+		//	Body:       "Count Header should be a number",
+		//}, nil
+	}
 
 	svc := dynamodb.New(cfg)
 	req := svc.ScanRequest(&dynamodb.ScanInput{
 		TableName: aws.String(os.Getenv("TABLE_NAME")),
-		//Limit:     aws.Int64(int64(size)),
+		Limit:     aws.Int64(int64(size)),
 	})
 	res, err := req.Send(context.TODO())
 	if err != nil {
