@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -16,8 +15,10 @@ import (
 
 // Movie entity mapping to Movies table in DB
 type Movie struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Cover       string `json:"cover"`
+	Description string `json:"description"`
 }
 
 func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -28,19 +29,19 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			Body:       "Error while retrieving AWS credentials",
 		}, nil
 	}
-	size, err := strconv.Atoi(request.Headers["Count"])
-	if err != nil {
-		//return events.APIGatewayProxyResponse{
-		//	StatusCode: http.StatusBadRequest,
-		//	Body:       "Count Header should be a number",
-		size = 4
-		//}, nil
-	}
+	//size, err := strconv.Atoi(request.Headers["Count"])
+	//if err != nil {
+	//return events.APIGatewayProxyResponse{
+	//	StatusCode: http.StatusBadRequest,
+	//	Body:       "Count Header should be a number",
+	//size = 4
+	//}, nil
+	//}
 
 	svc := dynamodb.New(cfg)
 	req := svc.ScanRequest(&dynamodb.ScanInput{
 		TableName: aws.String(os.Getenv("TABLE_NAME")),
-		Limit:     aws.Int64(int64(size)),
+		//Limit:     aws.Int64(int64(size)),
 	})
 	res, err := req.Send(context.TODO())
 	if err != nil {
@@ -53,8 +54,10 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	movies := make([]Movie, 0)
 	for _, item := range res.Items {
 		movies = append(movies, Movie{
-			ID:   *item["ID"].S,
-			Name: *item["Name"].S,
+			ID:          *item["ID"].S,
+			Name:        *item["Name"].S,
+			Cover:       *item["Cover"].S,
+			Description: *item["Description"].S,
 		})
 	}
 
