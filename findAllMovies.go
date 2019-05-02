@@ -16,10 +16,10 @@ import (
 
 // Movie entity mapping to Movies table in DB
 type Movie struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Cover       string `json:"cover"`
-	Description string `json:"description"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	//Cover       string `json:"cover"`
+	//Description string `json:"description"`
 }
 
 func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -55,10 +55,10 @@ func findAll(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	movies := make([]Movie, 0)
 	for _, item := range res.Items {
 		movies = append(movies, Movie{
-			ID:          *item["ID"].S,
-			Name:        *item["Name"].S,
-			Cover:       *item["Cover"].S,
-			Description: *item["Description"].S,
+			ID:   *item["ID"].S,
+			Name: *item["Name"].S,
+			//Cover:       *item["Cover"].S,
+			//Description: *item["Description"].S,
 		})
 	}
 
